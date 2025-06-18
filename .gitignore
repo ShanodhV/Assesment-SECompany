@@ -28,4 +28,10 @@ build/
 
 # System Files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Project specific
+assets/images/temp/
+*.bak
+*.tmp
+*.temp 
