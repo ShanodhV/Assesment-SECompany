@@ -81,48 +81,54 @@ document.querySelectorAll('.tech-icon').forEach(icon => {
     });
 });
 
-// Form Handling
-document.addEventListener('DOMContentLoaded', function () {
-    // Newsletter Form
+// Import modules
+import { Header } from './modules/header.js';
+
+// Initialize modules
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize header
+    const header = new Header();
+
+    // Newsletter Form Handling
     const newsletterForm = document.querySelector('.newsletter-form');
     if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function (e) {
+        newsletterForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const emailInput = this.querySelector('input[type="email"]');
+
+            const emailInput = newsletterForm.querySelector('input[type="email"]');
             const email = emailInput.value.trim();
 
-            if (validateEmail(email)) {
-                // Show loading state
-                const submitBtn = this.querySelector('button');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Subscribing...';
-                submitBtn.disabled = true;
+            if (!email) {
+                showError(newsletterForm, 'Please enter your email address');
+                return;
+            }
 
+            if (!isValidEmail(email)) {
+                showError(newsletterForm, 'Please enter a valid email address');
+                return;
+            }
+
+            const submitButton = newsletterForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Subscribing...';
+
+            try {
                 // Simulate API call
-                setTimeout(() => {
-                    // Show success message
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'success-message';
-                    successMessage.textContent = 'Thank you for subscribing!';
-                    this.appendChild(successMessage);
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
-                    // Reset form
-                    emailInput.value = '';
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-
-                    // Remove success message after 3 seconds
-                    setTimeout(() => {
-                        successMessage.remove();
-                    }, 3000);
-                }, 1500);
-            } else {
-                showError(emailInput, 'Please enter a valid email address');
+                showSuccess(newsletterForm, 'Successfully subscribed to newsletter!');
+                newsletterForm.reset();
+            } catch (error) {
+                showError(newsletterForm, 'Failed to subscribe. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
             }
         });
     }
 
-    // Contact Form
+    // Contact Form Handling
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
@@ -173,26 +179,22 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Helper Functions
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function showError(input, message) {
-    const formGroup = input.parentElement;
-    const error = formGroup.querySelector('.error-message') || document.createElement('div');
-    error.className = 'error-message';
-    error.textContent = message;
+function showError(form, message) {
+    const errorDiv = form.querySelector('.error-message') || document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
 
-    if (!formGroup.querySelector('.error-message')) {
-        formGroup.appendChild(error);
+    if (!form.querySelector('.error-message')) {
+        form.appendChild(errorDiv);
     }
 
-    input.classList.add('error');
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 5000);
 }
 
 function showSuccess(form, message) {
