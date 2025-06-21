@@ -64,5 +64,4 @@ This guide will help you navigate and use the TechStars Software Company website
 
 ## Contact Support
 For additional help, contact us at:
-- Email: support@techstars.com
-- Phone: +1 (555) 123-4567 
+- Email: shanodh6262@gmail.com
