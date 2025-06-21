@@ -91,7 +91,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any queries, please reach out to:
 - Shanodh - [GitHub Profile](https://github.com/ShanodhV)
-- Team Email - info@techstars.com
 
 ## 🙏 Acknowledgments
 
