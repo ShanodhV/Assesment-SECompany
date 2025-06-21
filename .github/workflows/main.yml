@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: write  # ✅ THIS IS REQUIRED
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,4 +35,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: . 
+        publish_dir: .
